@@ -14,6 +14,7 @@ import javax.swing.JTextArea;
 
 import Core.Evaluator;
 import Core.FileControler;
+import Core.Generator;
 import Core.Program;
 
 
@@ -80,6 +81,9 @@ public class MainWindow extends JFrame implements ActionListener{
 				}
 				else Program.log("Loaded file:\n"+input);
 				this.evaluate.setEnabled(true);
+				Evaluator.evaluate();
+				Generator.reevaluate();
+				Evaluator.clear();
 			}
 			else {
 				Program.error("MainWindow.actionPerformed.loadFile:\nThe input from file was null.");
@@ -88,7 +92,16 @@ public class MainWindow extends JFrame implements ActionListener{
 		}
 		else
 		if(source == evaluate) {
+			try {
 			Evaluator.evaluate();
+			}
+			catch(Exception e) {
+				Program.error("MainWindow.actionPerformed.evaluate\n"+e.toString());
+			}
+			evaluate.setEnabled(false);
+			Program.sleep(100);
+			evaluate.setEnabled(true);
+			
 		}
 	}
 }
