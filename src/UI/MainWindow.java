@@ -10,7 +10,10 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSlider;
 import javax.swing.JTextArea;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import Core.Evaluator;
 import Core.FileControler;
@@ -18,7 +21,7 @@ import Core.Generator;
 import Core.Program;
 
 
-public class MainWindow extends JFrame implements ActionListener{
+public class MainWindow extends JFrame implements ActionListener,ChangeListener{
 	private static final long serialVersionUID = 1L;
 	
 	JPanel panel = new JPanel();
@@ -28,13 +31,16 @@ public class MainWindow extends JFrame implements ActionListener{
 	JScrollPane pane = new JScrollPane(area);
 	
 	JButton loadFile = new JButton("Load");
-	JButton evaluate = new JButton("Evaluate");
+	JButton generate = new JButton("Generate");
 	
+	JSlider minLength = new JSlider(3,8,5);	
+	JSlider maxLength = new JSlider(5,20,8);	
 	
 	public MainWindow() {
 		setSize(640, 640);
+		setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		this.panel.setBackground(new Color(0, 43, 60));
+		this.panel.setBackground(new Color(50, 93,110));
 		setResizable(false);
 		setContent();
 		setVisible(true);
@@ -61,10 +67,33 @@ public class MainWindow extends JFrame implements ActionListener{
 											   (rec.height)/80, 
 											    rec.width-Program.AREA_WIDTH-(rec.width/16)+((20*Program.AREA_WIDTH)/320), 
 											   (rec.height*5)/40); loadFile.addActionListener(this);
-		panel.add(evaluate); evaluate.setBounds(rec.width/32, 
-				   							   (rec.height*13)/80, 
+
+		panel.add(minLength); minLength.setBounds(rec.width/32, 
+											   (rec.height*17)/80, 
 				   							   rec.width-Program.AREA_WIDTH-(rec.width/16)+((20*Program.AREA_WIDTH)/320), 
-				   							   (rec.height*5)/40); evaluate.setEnabled(false); evaluate.addActionListener(this);
+				   							   (rec.height*3)/40); minLength.setEnabled(true); minLength.addChangeListener(this);	
+											   minLength.setPaintTicks(true);
+											   minLength.setMinorTickSpacing(1);
+											   minLength.setMajorTickSpacing(2);
+				   							   minLength.setPaintLabels(true);
+				   							   minLength.setSnapToTicks(true);
+				   							   minLength.setBackground(this.panel.getBackground());		   							   
+
+		panel.add(maxLength); maxLength.setBounds(rec.width/32, 
+											   (rec.height*25)/80, 
+				   							   rec.width-Program.AREA_WIDTH-(rec.width/16)+((20*Program.AREA_WIDTH)/320), 
+				   							   (rec.height*3)/40); maxLength.setEnabled(true); maxLength.addChangeListener(this);	
+				   							   maxLength.setPaintTicks(true);
+				   							   maxLength.setMinorTickSpacing(1);
+											   maxLength.setMajorTickSpacing(2);
+				   							   maxLength.setPaintLabels(true);
+				   							   maxLength.setSnapToTicks(true);
+				   							   maxLength.setBackground(this.panel.getBackground());	
+				   									
+		panel.add(generate); generate.setBounds(rec.width/32, 
+				   							   (rec.height*35)/80, 
+				   							   rec.width-Program.AREA_WIDTH-(rec.width/16)+((20*Program.AREA_WIDTH)/320), 
+				   							   (rec.height*5)/40); generate.setEnabled(false); generate.addActionListener(this);
 		panel.setLayout(null);
 		setContentPane(panel);
 	}
@@ -80,28 +109,41 @@ public class MainWindow extends JFrame implements ActionListener{
 					Program.log("First 44 chars from loaded file:\n"+input.substring(0, 43));
 				}
 				else Program.log("Loaded file:\n"+input);
-				this.evaluate.setEnabled(true);
+				this.generate.setEnabled(true);
 				Evaluator.evaluate();
-				Generator.reevaluate();
 				Evaluator.clear();
 			}
 			else {
 				Program.error("MainWindow.actionPerformed.loadFile:\nThe input from file was null.");
-				this.evaluate.setEnabled(false);
+				this.generate.setEnabled(false);
 			}
 		}
 		else
-		if(source == evaluate) {
+		if(source == generate) {
 			try {
-			Evaluator.evaluate();
+				
 			}
 			catch(Exception e) {
-				Program.error("MainWindow.actionPerformed.evaluate\n"+e.toString());
+				Program.error("MainWindow.actionPerformed.generate\n"+e.toString());
 			}
-			evaluate.setEnabled(false);
+			generate.setEnabled(false);
 			Program.sleep(100);
-			evaluate.setEnabled(true);
+			generate.setEnabled(true);
 			
+		}
+	}
+
+	@Override
+	public void stateChanged(ChangeEvent event) {
+		Object source = event.getSource();
+		if(source == minLength) {
+			int value = minLength.getValue();
+			maxLength.setMinimum(value);
+		}
+		else
+		if(source == maxLength) {
+			int value = maxLength.getValue();
+			minLength.setMaximum(value);
 		}
 	}
 }
