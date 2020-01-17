@@ -30,8 +30,8 @@ public class FileControler{
 		//Program.log(boop);
 		return boop;
 		} catch (Exception e) {
-			Program.error("FileControler.randomToByteArray: beep boop");
-			return "FDSAOI;FDSAF DSAFODSIAFF DSAF DSAFDS AFDSAFDSAF DSAFDSA GSDAGFDAGFDGFDS DG FDG";
+			Program.error("FileControler.randomToByteArray: file not found.");
+			return "Jiirkiip Rypimidio Pyrojiip Gairoor Iipiopal";
 		}
 	}
 	
