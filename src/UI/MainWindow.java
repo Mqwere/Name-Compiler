@@ -40,8 +40,8 @@ public class MainWindow extends JFrame implements ActionListener,ChangeListener{
 	JLabel maxLabel = new JLabel("Max. word length");
 	JLabel noLabel	= new JLabel("Number of generated words");
 	
-	JSlider minLength = new JSlider(3,8,5);	
-	JSlider maxLength = new JSlider(5,20,8);
+	JSlider minLength = new JSlider(3,8,4);	
+	JSlider maxLength = new JSlider(4,20,8);
 	
 	Integer[] tab = {10,20,50,100};
 	JComboBox<Integer> noBox	= new JComboBox<>(tab);
@@ -49,6 +49,7 @@ public class MainWindow extends JFrame implements ActionListener,ChangeListener{
 	public MainWindow() {
 		setSize(640, 640);
 		setLocationRelativeTo(null);
+		setTitle("Name Compiler");
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.panel.setBackground(new Color(50, 93,110));
 		setResizable(false);
@@ -92,14 +93,19 @@ public class MainWindow extends JFrame implements ActionListener,ChangeListener{
 		panel.add(maxLabel);
 		maxLabel.setBounds(rec.width/16, (rec.height*23)/80, rec.width-Program.AREA_WIDTH-(rec.width/16)+((20*Program.AREA_WIDTH)/320), (rec.height*1)/40);
 		panel.add(maxLength); maxLength.setBounds(rec.width/32, (rec.height*25)/80, rec.width-Program.AREA_WIDTH-(rec.width/16)+((20*Program.AREA_WIDTH)/320), (rec.height*3)/40);
-		maxLength.setEnabled(true); maxLength.addChangeListener(this);	
+		maxLength.setEnabled(true); maxLength.addChangeListener(this);
 		maxLength.setPaintTicks(true);
 		maxLength.setMinorTickSpacing(1);
 		maxLength.setMajorTickSpacing(2);
 		maxLength.setPaintLabels(true);
 		maxLength.setSnapToTicks(true);
 		maxLength.setBackground(this.panel.getBackground());	
-				   							   
+		
+		panel.add(noLabel);
+		noLabel.setBounds(rec.width*3/64, (rec.height*32)/80, rec.width-Program.AREA_WIDTH-(rec.width/16)+((20*Program.AREA_WIDTH)/320), (rec.height*1)/40);
+		panel.add(noBox); noBox.setBounds(rec.width/32, (rec.height*35)/80, rec.width-Program.AREA_WIDTH-(rec.width/16)+((20*Program.AREA_WIDTH)/320), (rec.height*3)/40);
+		noBox.setSelectedItem(20);
+		
 		panel.add(generate); generate.setBounds(rec.width/32, (rec.height*50)/80, rec.width-Program.AREA_WIDTH-(rec.width/16)+((20*Program.AREA_WIDTH)/320), (rec.height*5)/40); 
 		generate.setEnabled(false); 
 		generate.addActionListener(this);
@@ -124,7 +130,6 @@ public class MainWindow extends JFrame implements ActionListener,ChangeListener{
 				else Program.log("Loaded file:\n"+input);
 				this.generate.setEnabled(true);
 				Evaluator.evaluate();
-				Evaluator.clear();
 			}
 			else {
 				Program.error("MainWindow.actionPerformed.loadFile:\nThe input from file was null.");
@@ -161,14 +166,7 @@ public class MainWindow extends JFrame implements ActionListener,ChangeListener{
 	@Override
 	public void stateChanged(ChangeEvent event) {
 		Object source = event.getSource();
-		if(source == minLength) {
-			int value = minLength.getValue();
-			maxLength.setMinimum(value);
-		}
-		else
-		if(source == maxLength) {
-			int value = maxLength.getValue();
-			minLength.setMaximum(value);
-		}
+			 if(source == minLength) maxLength.setMinimum(minLength.getValue());
+		else if(source == maxLength) minLength.setMaximum(maxLength.getValue());
 	}
 }

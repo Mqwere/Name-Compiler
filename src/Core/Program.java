@@ -16,7 +16,7 @@ public class Program {
 		try {
 			Thread.sleep(milis);
 		} catch (InterruptedException e) {
-			Program.log(e);
+			Program.log(e); 
 		}
 	}
 	

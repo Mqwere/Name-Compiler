@@ -2,7 +2,6 @@ package Core;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,7 +27,7 @@ public class FileControler{
 				while((content = inStream.read()) !=-1) {
 					temp.add((byte)(content/*-44*/));
 				}
-				inStream.close();
+				inStream.close(); 
 				String boop = new String();
 				for(Byte b: temp)
 					boop += (char)Byte.toUnsignedInt(b);
