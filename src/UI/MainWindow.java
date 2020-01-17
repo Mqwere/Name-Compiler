@@ -7,7 +7,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
@@ -32,9 +34,17 @@ public class MainWindow extends JFrame implements ActionListener,ChangeListener{
 	
 	JButton loadFile = new JButton("Load");
 	JButton generate = new JButton("Generate");
+	JButton ranGen	 = new JButton("<html>Generate<br/>randomly</html>");
+	
+	JLabel minLabel = new JLabel("Min. word length");
+	JLabel maxLabel = new JLabel("Max. word length");
+	JLabel noLabel	= new JLabel("Number of generated words");
 	
 	JSlider minLength = new JSlider(3,8,5);	
-	JSlider maxLength = new JSlider(5,20,8);	
+	JSlider maxLength = new JSlider(5,20,8);
+	
+	Integer[] tab = {10,20,50,100};
+	JComboBox<Integer> noBox	= new JComboBox<>(tab);
 	
 	public MainWindow() {
 		setSize(640, 640);
@@ -58,44 +68,47 @@ public class MainWindow extends JFrame implements ActionListener,ChangeListener{
 	private void setContent(){
 		Rectangle rec = this.getBounds();
 		area.setFont(new Font(Font.MONOSPACED,Font.PLAIN,14));
-		panel.add(pane); pane.setBounds        (rec.width-Program.AREA_WIDTH+(20*Program.AREA_WIDTH)/320, 
-											   (rec.height)/80, 
-											   (Program.AREA_WIDTH*7)/8, 
-											   (rec.height*36)/40); 
+		panel.add(pane); pane.setBounds
+		(rec.width-Program.AREA_WIDTH+(20*Program.AREA_WIDTH)/320, (rec.height)/80,  (Program.AREA_WIDTH*7)/8, (rec.height*36)/40); 
 		area.setEditable(false); area.setBackground(new Color(200,200,200));
-		panel.add(loadFile); loadFile.setBounds(rec.width/32, 
-											   (rec.height)/80, 
-											    rec.width-Program.AREA_WIDTH-(rec.width/16)+((20*Program.AREA_WIDTH)/320), 
-											   (rec.height*5)/40); loadFile.addActionListener(this);
+		
+		panel.add(loadFile); 
+		loadFile.setBounds(rec.width/32, (rec.height)/80,  rec.width-Program.AREA_WIDTH-(rec.width/16)+((20*Program.AREA_WIDTH)/320), (rec.height*5)/40); 
+		loadFile.addActionListener(this);
 
-		panel.add(minLength); minLength.setBounds(rec.width/32, 
-											   (rec.height*17)/80, 
-				   							   rec.width-Program.AREA_WIDTH-(rec.width/16)+((20*Program.AREA_WIDTH)/320), 
-				   							   (rec.height*3)/40); minLength.setEnabled(true); minLength.addChangeListener(this);	
-											   minLength.setPaintTicks(true);
-											   minLength.setMinorTickSpacing(1);
-											   minLength.setMajorTickSpacing(2);
-				   							   minLength.setPaintLabels(true);
-				   							   minLength.setSnapToTicks(true);
-				   							   minLength.setBackground(this.panel.getBackground());		   							   
+		panel.add(minLabel);
+		minLabel.setBounds(rec.width/16, (rec.height*15)/80, rec.width-Program.AREA_WIDTH-(rec.width/16)+((20*Program.AREA_WIDTH)/320), (rec.height*1)/40);
+		panel.add(minLength); 
+		minLength.setBounds(rec.width/32, (rec.height*17)/80, rec.width-Program.AREA_WIDTH-(rec.width/16)+((20*Program.AREA_WIDTH)/320), (rec.height*3)/40); 
+		minLength.setEnabled(true); 
+		minLength.addChangeListener(this); 
+		minLength.setPaintTicks(true);
+		minLength.setMinorTickSpacing(1);
+		minLength.setMajorTickSpacing(2);
+		minLength.setPaintLabels(true);
+		minLength.setSnapToTicks(true);
+		minLength.setBackground(this.panel.getBackground());		   							   
 
-		panel.add(maxLength); maxLength.setBounds(rec.width/32, 
-											   (rec.height*25)/80, 
-				   							   rec.width-Program.AREA_WIDTH-(rec.width/16)+((20*Program.AREA_WIDTH)/320), 
-				   							   (rec.height*3)/40); maxLength.setEnabled(true); maxLength.addChangeListener(this);	
-				   							   maxLength.setPaintTicks(true);
-				   							   maxLength.setMinorTickSpacing(1);
-											   maxLength.setMajorTickSpacing(2);
-				   							   maxLength.setPaintLabels(true);
-				   							   maxLength.setSnapToTicks(true);
-				   							   maxLength.setBackground(this.panel.getBackground());	
-				   									
-		panel.add(generate); generate.setBounds(rec.width/32, 
-				   							   (rec.height*35)/80, 
-				   							   rec.width-Program.AREA_WIDTH-(rec.width/16)+((20*Program.AREA_WIDTH)/320), 
-				   							   (rec.height*5)/40); generate.setEnabled(false); generate.addActionListener(this);
+		panel.add(maxLabel);
+		maxLabel.setBounds(rec.width/16, (rec.height*23)/80, rec.width-Program.AREA_WIDTH-(rec.width/16)+((20*Program.AREA_WIDTH)/320), (rec.height*1)/40);
+		panel.add(maxLength); maxLength.setBounds(rec.width/32, (rec.height*25)/80, rec.width-Program.AREA_WIDTH-(rec.width/16)+((20*Program.AREA_WIDTH)/320), (rec.height*3)/40);
+		maxLength.setEnabled(true); maxLength.addChangeListener(this);	
+		maxLength.setPaintTicks(true);
+		maxLength.setMinorTickSpacing(1);
+		maxLength.setMajorTickSpacing(2);
+		maxLength.setPaintLabels(true);
+		maxLength.setSnapToTicks(true);
+		maxLength.setBackground(this.panel.getBackground());	
+				   							   
+		panel.add(generate); generate.setBounds(rec.width/32, (rec.height*50)/80, rec.width-Program.AREA_WIDTH-(rec.width/16)+((20*Program.AREA_WIDTH)/320), (rec.height*5)/40); 
+		generate.setEnabled(false); 
+		generate.addActionListener(this);
+		
+		panel.add(ranGen); ranGen.setBounds(rec.width/32, (rec.height*63)/80, rec.width-Program.AREA_WIDTH-(rec.width/16)+((20*Program.AREA_WIDTH)/320), (rec.height*5)/40); 
+		ranGen.addActionListener(this);
+		
 		panel.setLayout(null);
-		setContentPane(panel);
+		setContentPane(panel);		
 	}
 
 	@Override
@@ -121,7 +134,7 @@ public class MainWindow extends JFrame implements ActionListener,ChangeListener{
 		else
 		if(source == generate) {
 			try {
-				
+				Generator.generate((Integer)noBox.getSelectedItem(), minLength.getValue(), maxLength.getValue());
 			}
 			catch(Exception e) {
 				Program.error("MainWindow.actionPerformed.generate\n"+e.toString());
@@ -130,6 +143,18 @@ public class MainWindow extends JFrame implements ActionListener,ChangeListener{
 			Program.sleep(100);
 			generate.setEnabled(true);
 			
+		}
+		else
+		if(source==ranGen) {
+			try {
+				Generator.ranGen((Integer)noBox.getSelectedItem(), minLength.getValue(), maxLength.getValue());
+			}
+			catch(Exception e) {
+				Program.error("MainWindow.actionPerformed.ranGen\n"+e.toString());
+			}
+			ranGen.setEnabled(false);
+			Program.sleep(100);
+			ranGen.setEnabled(true);
 		}
 	}
 

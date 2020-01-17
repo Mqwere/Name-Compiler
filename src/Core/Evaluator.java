@@ -11,6 +11,13 @@ public class Evaluator {
 	public static HashMap<Character,HashMap<Character,Integer>>
 		flowMap 	= new HashMap<>();
 	
+	public static void randomMap() {
+		clear();
+		communicate("Initiating random evaluation.");
+		set("Jiirkiip Rypimidio Pyrojiip");
+		evaluate();
+	}
+	
 	public static void set(String str) {
 		String output = new String();
 		for(char c: str.toCharArray()) {
@@ -55,6 +62,10 @@ public class Evaluator {
 			else continue;
 		}
 		reevaluate();
+	}
+	
+	private static void enrich() {
+		
 	}
 	
 	private/**/ static void reevaluate() {
