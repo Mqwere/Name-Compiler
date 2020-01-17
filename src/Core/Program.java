@@ -73,7 +73,7 @@ public class Program {
 		}
 		else {
 			offset = 1;
-			mainWindow.addToArea(" ");
+			mainWindow.addToArea(" "); 
 		}
 		
 		for(int i=0; i<offset;i++) tab+=" ";

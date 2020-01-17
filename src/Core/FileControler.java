@@ -14,11 +14,33 @@ public class FileControler{
 	private static JFileChooser 
 			fileChooser = new JFileChooser(".");
 	
+	public static String randomToByteArray() {
+		FileInputStream inStream;
+		try {
+			inStream = new FileInputStream(new File("randomFile.txt"));
+		int content;
+		ArrayList<Byte> temp = new  ArrayList<Byte>();
+		while((content = inStream.read()) !=-1) {
+			temp.add((byte)(content/*-44*/));
+		}
+		inStream.close(); 
+		String boop = new String();
+		for(Byte b: temp)
+			boop += (char)Byte.toUnsignedInt(b);
+		//Program.log(boop);
+		return boop;
+		} catch (Exception e) {
+			Program.error("FileControler.randomToByteArray: beep boop");
+			return "FDSAOI;FDSAF DSAFODSIAFF DSAF DSAFDS AFDSAFDSAF DSAFDSA GSDAGFDAGFDGFDS DG FDG";
+		}
+	}
+	
 	public static String fileToByteArray(JFrame parent) {
 		int choice = fileChooser.showOpenDialog(parent);
 		File file;
 		if(choice == JFileChooser.APPROVE_OPTION) {
 			file  = fileChooser.getSelectedFile();
+			Program.log(file.getAbsolutePath());
 			FileInputStream inStream;
 			try {
 				inStream = new FileInputStream(file);

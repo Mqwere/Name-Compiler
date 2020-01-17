@@ -68,7 +68,7 @@ public class MainWindow extends JFrame implements ActionListener,ChangeListener{
 	
 	private void setContent(){
 		Rectangle rec = this.getBounds();
-		area.setFont(new Font(Font.MONOSPACED,Font.PLAIN,14));
+		area.setFont(new Font(Font.MONOSPACED,Font.PLAIN,12));
 		panel.add(pane); pane.setBounds
 		(rec.width-Program.AREA_WIDTH+(20*Program.AREA_WIDTH)/320, (rec.height)/80,  (Program.AREA_WIDTH*7)/8, (rec.height*36)/40); 
 		area.setEditable(false); area.setBackground(new Color(200,200,200));
@@ -151,12 +151,12 @@ public class MainWindow extends JFrame implements ActionListener,ChangeListener{
 		}
 		else
 		if(source==ranGen) {
-			try {
+			//try {
 				Generator.ranGen((Integer)noBox.getSelectedItem(), minLength.getValue(), maxLength.getValue());
-			}
+			/*}
 			catch(Exception e) {
 				Program.error("MainWindow.actionPerformed.ranGen\n"+e.toString());
-			}
+			}/**/
 			ranGen.setEnabled(false);
 			Program.sleep(100);
 			ranGen.setEnabled(true);

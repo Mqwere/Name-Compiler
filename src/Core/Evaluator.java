@@ -5,15 +5,13 @@ import java.util.HashMap;
 public class Evaluator {
 	public static String content = new String("");
 	public static CharRegister
-		general	= new CharRegister();
-	public static CharRegister
 		start  	= new CharRegister();
 	public static HashMap<Character,CharRegister>
 		flow 	= new HashMap<>();
 	
 	public static void randomMap() {
 		communicate("Initiating random evaluation.");
-		set("Jiirkiip Rypimidio Pyrojiip");
+		set(FileControler.randomToByteArray());
 		evaluate();
 	}
 	
@@ -38,9 +36,12 @@ public class Evaluator {
 				for(int j=0; j<word.length();j++) {
 					char chr = word.charAt(j);
 					if(j==0) {
-						if(start.map.get(chr)==null) 
-								start.map.put(chr, 1);
-						else 	start.map.put(chr, start.map.get(chr)+1);
+						if(start.map.get(chr)==null) {
+							start.map.put(chr, 1);
+						}
+						else 	{
+							start.map.put(chr, start.map.get(chr)+1);
+						}
 					}
 					else {
 						CharRegister temp = new CharRegister();
@@ -54,9 +55,6 @@ public class Evaluator {
 						}
 						flow.put(word.charAt(j-1), temp);
 					}
-					if(start.map.get(chr)==null) 
-							start.map.put(chr, 1);
-					else 	start.map.put(chr, start.map.get(chr)+1);
 				}
 			}
 			else continue;
@@ -69,23 +67,16 @@ public class Evaluator {
 //	}
 	
 	private/**/ static void reevaluate() {
-		CharRegister tempG = new CharRegister(start.map);
 		CharRegister tempS = new CharRegister(start.map);
 		HashMap<Character, CharRegister> tempF = new HashMap<Character,CharRegister>(flow);
 		clearMaps();
 		
-		if(tempG==null||tempS==null||tempF==null) {
+		if(tempS==null||tempF==null) {
 			communicate("One of the evaluated maps was null, unable to comply");
 			return;
 		}
 		else {
 			int temp = 0;
-			for(Character c: tempG.map.keySet()) {
-				temp+=tempG.map.get(c);
-				start.map.put(c,temp);
-			}
-			
-			temp = 0;
 			for(Character c: tempS.map.keySet()) {
 				temp+=tempS.map.get(c);
 				start.map.put(c,temp);
@@ -103,6 +94,7 @@ public class Evaluator {
 		}
 		communicate("Full evaluation completed.");
 		//toConsole();
+		//fullConsole();
 	}
 	
 	public static void clearMaps() {
@@ -122,9 +114,13 @@ public class Evaluator {
 	
 	public static void toConsole() {
 		communicate("START MAP:\n"+start.getMax());
-		communicate("GENERAL MAP:\n"+general.getMax());
 		String output = new String("FLOW MAP:");
 		for(Character c: flow.keySet()) {output+="\n"+c+" "+flow.get(c).getMax();}
 		communicate(output);
+	}
+	
+	public static void fullConsole() {
+		communicate("START MAP:\n"+start.map.toString());
+		communicate("FLOW MAP:\n"+flow.toString());
 	}
 }
